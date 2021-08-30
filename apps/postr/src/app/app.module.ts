@@ -26,6 +26,7 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { PostComponent } from './post/post.component';
 import { IDResolver } from './id.resolver';
 import { MyProfileComponent } from './my-profile/my-profile.component';
+import { NewPostComponent } from './new-post/new-post.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
     path: 'my-profile',
     data: { id: 0 },
   },
+  {
+    component: NewPostComponent,
+    path: 'new-post',
+  },
 ];
 
 @NgModule({
@@ -57,6 +62,7 @@ const routes: Routes = [
     ProfileComponent,
     PostComponent,
     MyProfileComponent,
+    NewPostComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,34 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { AddPostGQL } from '@graphql-state-spike/data-access';
 
-type Post = {
-  id: 1;
-  author: string;
-  title: string;
-  body: string;
-}
 @Component({
   selector: 'graphql-state-spike-new-post',
   templateUrl: './new-post.component.html',
-  styleUrls: ['./new-post.component.scss']
+  styleUrls: ['./new-post.component.scss'],
 })
-export class NewPostComponent implements OnInit{
+export class NewPostComponent {
   readonly form = this.fb.group({
     title: ['', Validators.required],
-    author: ['', Validators.required],
     body: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder){}
-  
-  
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private newPostMutation: AddPostGQL
+  ) {}
 
-  async onSubmit(){
-    console.log
-  }
+  async onSubmit() {
+    console.log('clicked');
+    const { title, body } = this.form.value;
+    {
+      title;
+      body;
+    }
+    const result = await this.newPostMutation
+      .mutate({ authorId: 1, body, title })
+      .toPromise();
 
+    const id = result.data?.addPost?.id;
+    this.router.navigateByUrl('/posts/' + id);
+  }
 }
